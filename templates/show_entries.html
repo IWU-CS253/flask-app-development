@@ -1,5 +1,20 @@
 {% extends "layout.html" %}
 {% block body %}
+
+    <script>
+    // test
+        document.addEventListener('DOMContentLoaded', function () {
+           document.querySelector("input[name=checkbox]").addEventListener('change', function() {
+               if(this.checked) {
+                   document.getElementById("text").innerHTML = "Completed"
+               }
+               else {
+                   document.getElementById("text").innerHTML = "Incomplete"
+               }
+           })
+        })
+    </script>
+
   <form action="{{ url_for('add_entry') }}" method="post" class="add-entry">
     <dl>
       <dt>Title:
@@ -11,7 +26,21 @@
   </form>
   <ul class="entries">
   {% for entry in entries %}
-    <li><h2>{{ entry.title }}</h2>{{ entry.text|safe }}</li>
+    <li><h2>{{ entry.title }}</h2>{{ entry.text|safe }}
+        <p id="text">Incomplete</p>
+        <input type="checkbox" name="checkbox">
+
+        <ins> </ins>
+
+        <form action="/delete" method="post">
+            <input name="id" type="hidden" value={{ entry.id }}>
+            <button name='delete'>Delete</button>
+        </form>
+        <form action="/edit" method="POST">
+            <input name="id" type="hidden" value={{ entry.id }}>
+            <button name="edit" method=POST>Edit</button>
+        </form>
+    </li>
   {% else %}
     <li><em>Unbelievable.  No entries here so far</em></li>
   {% endfor %}
